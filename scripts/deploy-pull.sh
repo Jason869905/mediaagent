@@ -30,11 +30,21 @@ FULL_IMAGE="${SWR_REGISTRY}/${SWR_ORG}/${IMAGE_NAME}:${MEDIA_AGENT_TAG}"
 echo ">>> 拉取镜像: ${FULL_IMAGE}"
 docker pull "$FULL_IMAGE"
 
+COMPOSE_CMD=""
+if docker compose version &>/dev/null; then
+    COMPOSE_CMD="docker compose"
+elif command -v docker-compose &>/dev/null; then
+    COMPOSE_CMD="docker-compose"
+else
+    echo "错误：未找到 docker compose 或 docker-compose"
+    exit 1
+fi
+
 echo ">>> 重启服务..."
-docker compose up -d
+${COMPOSE_CMD} up -d
 
 echo ">>> 清理旧镜像..."
 docker image prune -f
 
 echo ">>> 部署完成"
-docker compose ps
+${COMPOSE_CMD} ps
