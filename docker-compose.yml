@@ -1,0 +1,27 @@
+services:
+  web:
+    image: mediaagent:latest
+    build: .
+    container_name: mediaagent-web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    restart: unless-stopped
+
+  certbot:
+    image: certbot/certbot
+    container_name: mediaagent-certbot
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    entrypoint: >
+      sh -c "trap exit TERM;
+      while :; do
+        certbot renew --webroot -w /var/www/certbot --non-interactive --agree-tos --email contact@hollyhook.com -d hollyhook.com -d www.hollyhook.com;
+        sleep 12h & wait $${!};
+      done"
+    depends_on:
+      - web
