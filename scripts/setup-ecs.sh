@@ -43,7 +43,7 @@ if docker compose version &>/dev/null 2>&1; then
 else
     echo ">>> 安装 Docker Compose V2 插件..."
     if [ "$OS" = "ubuntu" ] || [ "$OS" = "debian" ]; then
-        apt-get update && apt-get install -y docker-compose-plugin
+        apt-get update && apt-get install -y docker-compose-v2 || apt-get install -y docker-compose-plugin
     else
         yum install -y docker-compose-plugin
     fi
