@@ -1,6 +1,6 @@
 services:
   web:
-    image: ${SWR_REGISTRY}/${IMAGE_NAME}:${MEDIA_AGENT_TAG:-latest}
+    image: ${SWR_REGISTRY}/${SWR_ORG}/${IMAGE_NAME}:${MEDIA_AGENT_TAG:-latest}
     container_name: mediaagent-web
     ports:
       - "80:80"

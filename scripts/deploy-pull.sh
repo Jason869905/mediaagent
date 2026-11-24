@@ -18,9 +18,14 @@ if [ -z "$SWR_REGISTRY" ]; then
     exit 1
 fi
 
+if [ -z "$SWR_ORG" ]; then
+    echo "错误：请在 .env 中配置 SWR_ORG"
+    exit 1
+fi
+
 IMAGE_NAME="${IMAGE_NAME:-mediaagent}"
 MEDIA_AGENT_TAG="${MEDIA_AGENT_TAG:-latest}"
-FULL_IMAGE="${SWR_REGISTRY}/${IMAGE_NAME}:${MEDIA_AGENT_TAG}"
+FULL_IMAGE="${SWR_REGISTRY}/${SWR_ORG}/${IMAGE_NAME}:${MEDIA_AGENT_TAG}"
 
 echo ">>> 拉取镜像: ${FULL_IMAGE}"
 docker pull "$FULL_IMAGE"
